@@ -1,0 +1,81 @@
+default: &default
+  url_azul: https://pagos.azul.com.do/PaymentPage/ # url to send the transation
+
+  # It's very necessary
+
+  auth_key: 'ategix' # authentication key
+
+  merchant_id: '39036630010'
+  merchant_type: 'Sale'
+  merchant_name: 'Ategix'
+
+  # Url's transation
+  approved_url: 'https://702d8923.ngrok.io/?res=approved_url' # If the transation was approved
+  declined_url: 'https://702d8923.ngrok.io/?res=declined_url' # If the transation was declined
+  cancel_url: 'https://702d8923.ngrok.io/?res=canceled_url' # If the transation was cancelled
+
+  response_post_url: 'https://702d8923.ngrok.io/?res=response_post_url' # Optional. Url where will send response parameters
+
+  # Optionals
+  custom_field_1: 0
+  custom_field_1_label: ''
+  custom_field_1_value: ''
+
+  custom_field_2: 0
+  custom_field_2_label: ''
+  custom_field_2_value: ''
+
+development:
+  url_azul: https://pruebas.azul.com.do/PaymentPage/ # url to send the transation
+
+  # It's very necessary
+  auth_key: 'ategix' # authentication key
+
+  merchant_id: '39036630010'
+  merchant_type: 'Sale'
+  merchant_name: 'Ategix'
+
+  # Url's transation
+  approved_url: 'https://702d8923.ngrok.io/?res=approved_url' # If the transation was approved
+  declined_url: 'https://702d8923.ngrok.io/?res=declined_url' # If the transation was declined
+  cancel_url: 'https://702d8923.ngrok.io/?res=canceled_url' # If the transation was cancelled
+
+  response_post_url: 'https://702d8923.ngrok.io/?res=response_post_url' # Optional. Url where will send response parameters
+
+  # Optionals
+  custom_field_1: 0
+  custom_field_1_label: ''
+  custom_field_1_value: ''
+
+  custom_field_2: 0
+  custom_field_2_label: ''
+  custom_field_2_value: ''
+
+test:
+  url_azul: https://pruebas.azul.com.do/PaymentPage/ # url to send the transation
+
+  # It's very necessary
+  auth_key: 'ategix' # authentication key
+
+  merchant_id: '39036630010'
+  merchant_type: 'Sale'
+  merchant_name: 'Ategix'
+
+  # Url's transation
+  approved_url: 'https://702d8923.ngrok.io/?res=approved_url' # If the transation was approved
+  declined_url: 'https://702d8923.ngrok.io/?res=declined_url' # If the transation was declined
+  cancel_url: 'https://702d8923.ngrok.io/?res=canceled_url' # If the transation was cancelled
+
+  response_post_url: 'https://702d8923.ngrok.io/?res=response_post_url' # Optional. Url where will send response parameters
+
+  # Optionals
+  custom_field_1: 0
+  custom_field_1_label: ''
+  custom_field_1_value: ''
+
+  custom_field_2: 0
+  custom_field_2_label: ''
+  custom_field_2_value: ''
+
+production:
+  <<: *default
