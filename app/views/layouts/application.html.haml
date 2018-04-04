@@ -4,12 +4,12 @@
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
     %title= content_for?(:title) ? yield(:title) : 'Rails Azul Payment Integration'
     %meta{:name => "description", :content => "#{content_for?(:description) ? yield(:description) : 'Rails Azul Payment Integration'}"}
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   %body
     %header
       = render 'layouts/navigation'
-    %main{:role => "main"}
+    %main{:class => "main-window", :role => "main"}
       = render 'layouts/messages'
       = yield

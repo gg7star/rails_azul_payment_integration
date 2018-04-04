@@ -13,3 +13,19 @@
  *= require_tree .
  *= require_self
  */
+
+ .main-window {
+   margin-top: 80px;
+ }
+
+ .contianer_fluid {
+   width: 900%;
+   max-width: 100%;
+ }
+
+ .authform-wide {
+   padding-top: 30px;
+   min-width: 320px;
+   max-width: 50%;
+   margin: 0 auto;
+ }

@@ -1,10 +1,16 @@
 -# navigation styled for Bootstrap 3.0
-.container
-  %nav.navbar.navbar-dark.bg-inverse
-    %ul.nav.navbar-nav.clearfix
-      %li.nav-item
-        %button.navbar-toggler.hidden-sm-up.nav-link{"aria-controls" => "exCollapsingNavbar2", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#exCollapsingNavbar2", "data-toggle" => "collapse", :type => "button"}
-          \ &#9776;
-    #exCollapsingNavbar2.collapse.navbar-toggleable-xs
-      = link_to "Rails bootstrap", root_path, class: 'navbar-brand'
-      %ul.nav.navbar-nav= render 'layouts/navigation_links'
+-#.container
+%nav.navbar.navbar-expand-md.navbar-toggler-right.navbar-dark.fixed-top.bg-dark.navbar-inverse{role: :navigation}
+  .container.contianer_fluid
+    .navbar-header
+      %ul.nav.navbar-nav.clearfix
+        %li.nav-item
+          %button.navbar-toggler.collapsed.hidden-sm-up.nav-link{"aria-controls" => "exCollapsingNavbar2", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#exCollapsingNavbar2", "data-toggle" => "collapse", :type => "button"}
+            \ &#9776;
+      = link_to "AZUL payment", root_path, class: 'navbar-brand'
+
+    #navbarCollapse.collapse.navbar-collapse
+      %ul.navbar-nav.mr-auto
+        = render 'layouts/navigation_links'
+      %ul.navbar-nav.justify-content-end
+        = render 'layouts/nav_links_for_auth'
