@@ -81,27 +81,8 @@ class AzulsController < ApplicationController
     amount = '%.2f' % params[:amount].to_f.round(2)
     amount = '%.2f' %  (amount.to_f + itbis.to_f).round(2)
 
-    auth_hash =  "#{params[:azul][:merchant_id]}#{params[:azul][:merchant_name]}#{params[:azul][:merchant_type]}#{currency}#{order_number}#{amount}#{params[:azul][:approved_url]}#{params[:azul][:declined_url]}#{params[:azul][:cancel_url]}#{params[:azul][:response_post_url]}#{params[:azul][:auth_key]}"
+    auth_hash =  "#{params[:azul][:merchant_id]}#{params[:azul][:merchant_name]}#{params[:azul][:merchant_type]}#{currency}#{order_number}#{amount}#{params[:azul][:approved_url]}#{params[:azul][:declined_url]}#{params[:azul][:cancel_url]}#{params[:azul][:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:azul][:auth_key]}"
     auth_hash = Digest::SHA512.hexdigest auth_hash
-    puts "#{amount}, #{itbis}, #{order_number}, #{currency}, #{params[:azul][:merchant_id]}, #{auth_hash}"
-    # redirect_to "https://pruebas.azul.com.do/PaymentPage/"
-    #
-    # form_with(scope: :post, url: params[:azul][:url_azul]) do |form|
-    #   form.text_field :MerchantId, params[:azul][:merchant_id]
-    #   form.text_field :MerchantName, params[:azul][:merchant_name]
-    #   form.text_field :MerchantType, params[:azul][:merchant_type]
-    #   form.text_field :CurrencyCode, params[:currency]
-    #   form.text_field :itbis, params[:itbis]
-    #   form.text_field :OrderNumber, params[:order_number]
-    #   form.text_field :Amount, params[:amount]
-    #   form.text_field :ApprovedUrl, params[:azul][:approved_url]
-    #   form.text_field :DeclinedUrl, params[:azul][:declined_url]
-    #   form.text_field :CancelUrl, params[:azul][:cancel_url]
-    #   form.text_field :ResponsePostUrl, params[:azul][:response_post_url]
-    #   form.text_field :AuthHash, auth_hash
-    #
-    #   form.submit
-    # end
   end
 
   def api_mode
@@ -128,16 +109,21 @@ class AzulsController < ApplicationController
   end
 
   def get_auth_hash
-    custom_field_1 = 1
-    custom_field_1_label = 'test1'
-    custom_field_1_value = 't1'
-    custom_field_2 = 1
-    custom_field_2_label = 'test2'
-    custom_field_2_value = 't2'
-    auth_hash =  "#{params[:merchant_id]}#{params[:merchant_name]}#{params[:merchant_type]}#{params[:currency]}#{params[:order_number]}#{params[:amount]}#{params[:approved_url]}#{params[:declined_url]}#{params[:cancel_url]}#{params[:response_post_url]}#{custom_field_1}#{custom_field_1_label}#{custom_field_1_value}#{custom_field_2}#{custom_field_2_label}#{custom_field_2_value}#{params[:auth_key]}"
-    auth_hash = Digest::SHA512.hexdigest auth_hash
+    # save to database
+    azul = Azul.first
+    if azul.present?
+      azul.update(azul_params_from_api)
+    else
+      azul = Azul.create(azul_params_from_api)
+      azul.save!
+    end
+    # make auth_hash
+    origin_auth =  "#{params[:merchant_id]}#{params[:merchant_name]}#{params[:merchant_type]}#{params[:currency]}#{params[:order_number]}#{params[:amount]}#{params[:approved_url]}#{params[:declined_url]}#{params[:cancel_url]}#{params[:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:auth_key]}"
+
+    auth_hash = Digest::SHA512.hexdigest origin_auth
     render json: {auth_hash: auth_hash}
   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_azul
@@ -147,5 +133,8 @@ class AzulsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def azul_params
       params.require(:azul).permit(:merchant_id, :merchant_type, :merchant_name, :auth_key, :url_azul, :approved_url, :declined_url, :cancel_url, :response_post_url, :custom_field_1, :custom_field_1_label, :custom_field_1_value, :custom_field_2, :custom_field_2_label, :custom_field_2_value)
+    end
+    def azul_params_from_api
+      params.permit(:merchant_id, :merchant_type, :merchant_name, :auth_key, :url_azul, :approved_url, :declined_url, :cancel_url, :response_post_url, :custom_field_1, :custom_field_1_label, :custom_field_1_value, :custom_field_2, :custom_field_2_label, :custom_field_2_value)
     end
 end
