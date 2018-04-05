@@ -24,8 +24,21 @@
  }
 
  .authform-wide {
-   padding-top: 30px;
+   padding-top: 0px;
    min-width: 320px;
    max-width: 50%;
    margin: 0 auto;
+ }
+
+ .authform-fieldset {
+   margin-top: 1rem;
+ }
+
+ .authform-fieldset-last {
+   margin-bottom: 1rem;
+ }
+
+ .form-group-custom {
+   margin-top: 1rem;
+   margin-bottom: 0rem;
  }

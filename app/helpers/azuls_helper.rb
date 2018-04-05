@@ -1,0 +1,2 @@
+module AzulsHelper
+end

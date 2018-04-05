@@ -1,0 +1,124 @@
+%div
+  = form_for @azul, url: forward_to_azul_payment_page_azuls_path, method: :post do |f|
+    - if @azul.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@azul.errors.count, "error")} prohibited this azul from being saved:"
+        %ul
+          - @azul.errors.full_messages.each do |message|
+            %li= message
+
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = f.label :merchant_id
+        = f.text_field :merchant_id, class: 'form-control'
+      .fieldauthform-fieldset
+        = f.label :merchant_type
+        = f.text_field :merchant_type, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :merchant_name
+        = f.text_field :merchant_name, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :auth_key
+        = f.text_field :auth_key, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :url_azul
+        = f.text_field :url_azul, class: 'form-control'
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = f.label :approved_url
+        = f.text_field :approved_url, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :declined_url
+        = f.text_field :declined_url, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :cancel_url
+        = f.text_field :cancel_url, class: 'form-control'
+      .field.authform-fieldset
+        = f.label :response_post_url
+        = f.text_field :response_post_url, class: 'form-control'
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = label_tag :amount
+        = text_field_tag :amount, '720', html: {class: 'form-control'}
+      .field.authform-fieldset
+        = label_tag :itbis
+        = text_field_tag :itbis, '180', html: {class: 'form-control'}
+      .field.authform-fieldset
+        = label_tag :order_number
+        = text_field_tag :order_number, '1', html: {class: 'form-control'}
+      .field.authform-fieldset
+        = label_tag :currency
+        = text_field_tag :currency, '$', html: {class: 'form-control'}
+
+      = f.submit 'Go to Azul payment page', class: 'button right', id: "button-goto-azul"
+
+  = form_tag 'https://pruebas.azul.com.do/PaymentPage/', method: :post, id: "azul-transaction-form"
+
+
+:javascript
+  $(document).ready(function() {
+    $("#button-goto-azul").on('click', function(event) {
+      event.preventDefault();
+
+      var merchant_id = $('#azul_merchant_id').val();
+      var merchant_type = $('#azul_merchant_type').val();
+      var merchant_name = $('#azul_merchant_name').val();
+      var auth_key = $('#azul_auth_key').val();
+      var url_azul = $('#azul_url_azul').val();
+      var approved_url = $('#azul_approved_url').val();
+      var declined_url = $('#azul_declined_url').val();
+      var cancel_url = $('#azul_cancel_url').val();
+      var response_post_url = $('#azul_response_post_url').val();
+      var amount = $('#amount').val();
+      var itbis = $('#itbis').val();
+      var order_number = $('#order_number').val();
+      var currency = $('#currency').val();
+
+      add_property_into_azul_transaction_form("MerchantId", "MerchantId", merchant_id);
+      add_property_into_azul_transaction_form("MerchantName", "MerchantName", merchant_name);
+      add_property_into_azul_transaction_form("MerchantType", "MerchantType", merchant_type);
+      add_property_into_azul_transaction_form("CurrencyCode", "CurrencyCode", currency);
+      add_property_into_azul_transaction_form("itbis", "itbis", itbis);
+      add_property_into_azul_transaction_form("OrderNumber", "OrderNumber", order_number);
+      add_property_into_azul_transaction_form("Amount", "Amount", amount);
+      add_property_into_azul_transaction_form("ApprovedUrl", "ApprovedUrl", approved_url);
+      add_property_into_azul_transaction_form("DeclinedUrl", "DeclinedUrl", declined_url);
+      add_property_into_azul_transaction_form("CancelUrl", "CancelUrl", declined_url);
+      add_property_into_azul_transaction_form("ResponsePostUrl", "ResponsePostUrl", response_post_url);
+      add_property_into_azul_transaction_form("UseCustomField1", "UseCustomField1", '1');
+      add_property_into_azul_transaction_form("CustomField1Label", "CustomField1Label", 'test1');
+      add_property_into_azul_transaction_form("CustomField1Value", "CustomField1Value", 't1');
+      add_property_into_azul_transaction_form("UseCustomField2", "UseCustomField2", '1');
+      add_property_into_azul_transaction_form("CustomField2Label", "CustomField2Label", 'test2');
+      add_property_into_azul_transaction_form("CustomField2Value", "CustomField2Value", 't2');
+
+      $.get('/azuls/get_auth_hash?' + 'merchant_id=' + merchant_id +
+        '&merchant_type=' + merchant_type +
+        '&merchant_name=' + merchant_name +
+        '&auth_key=' + auth_key +
+        '&url_azul=' + url_azul +
+        '&declined_url=' + declined_url +
+        '&cancel_url=' + cancel_url +
+        '&response_post_url=' + response_post_url +
+        '&amount=' + amount +
+        '&itbis=' + itbis +
+        '&order_number=' + order_number +
+        '&currency=' + currency,
+        function (data) {
+          console.log('--- data: ', data.auth_hash);
+          add_property_into_azul_transaction_form("AuthHash", "AuthHash", data.auth_hash);
+          alert($("#azul-transaction-form").serialize());
+          $("#azul-transaction-form").submit();
+        });
+
+    });
+
+    function add_property_into_azul_transaction_form(id, name, value) {
+      console.log(id, name, value);
+      if(typeof value === 'undefined') {
+        value = '';
+      }
+      var input = $("<input/>", {type: "hidden", id: id, name: name, value:     value});
+      $("#azul-transaction-form").append(input);
+    }
+  });

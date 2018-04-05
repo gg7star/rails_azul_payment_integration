@@ -1,0 +1,37 @@
+%h1 Listing azuls
+
+%table
+  %thead
+    %tr
+      %th Merchant
+      %th Merchant type
+      %th Merchant name
+      %th Auth key
+      %th Url azul
+      %th Approved url
+      %th Declined url
+      %th Cancel url
+      %th Response post url
+      %th
+      %th
+      %th
+
+  %tbody
+    - @azuls.each do |azul|
+      %tr
+        %td= azul.merchant_id
+        %td= azul.merchant_type
+        %td= azul.merchant_name
+        %td= azul.auth_key
+        %td= azul.url_azul
+        %td= azul.approved_url
+        %td= azul.declined_url
+        %td= azul.cancel_url
+        %td= azul.response_post_url
+        %td= link_to 'Show', azul
+        %td= link_to 'Edit', edit_azul_path(azul)
+        %td= link_to 'Destroy', azul, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Azul', new_azul_path

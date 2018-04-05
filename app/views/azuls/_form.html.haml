@@ -1,0 +1,37 @@
+= form_for @azul do |f|
+  - if @azul.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@azul.errors.count, "error")} prohibited this azul from being saved:"
+      %ul
+        - @azul.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :merchant_id
+    = f.text_field :merchant_id
+  .field
+    = f.label :merchant_type
+    = f.text_field :merchant_type
+  .field
+    = f.label :merchant_name
+    = f.text_field :merchant_name
+  .field
+    = f.label :auth_key
+    = f.text_field :auth_key
+  .field
+    = f.label :url_azul
+    = f.text_field :url_azul
+  .field
+    = f.label :approved_url
+    = f.text_field :approved_url
+  .field
+    = f.label :declined_url
+    = f.text_field :declined_url
+  .field
+    = f.label :cancel_url
+    = f.text_field :cancel_url
+  .field
+    = f.label :response_post_url
+    = f.text_field :response_post_url
+  .actions
+    = f.submit 'Save'

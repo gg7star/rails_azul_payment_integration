@@ -1,0 +1,33 @@
+%p#notice= notice
+
+%p
+  %b Merchant:
+  = @azul.merchant_id
+%p
+  %b Merchant type:
+  = @azul.merchant_type
+%p
+  %b Merchant name:
+  = @azul.merchant_name
+%p
+  %b Auth key:
+  = @azul.auth_key
+%p
+  %b Url azul:
+  = @azul.url_azul
+%p
+  %b Approved url:
+  = @azul.approved_url
+%p
+  %b Declined url:
+  = @azul.declined_url
+%p
+  %b Cancel url:
+  = @azul.cancel_url
+%p
+  %b Response post url:
+  = @azul.response_post_url
+
+= link_to 'Edit', edit_azul_path(@azul)
+\|
+= link_to 'Back', azuls_path

@@ -1,0 +1,21 @@
+<form action="#{@azul.url_azul}" method="post">
+  <input type="hidden" id="MerchantId" name="MerchantId" value="#{@azul.merchant_id}" >
+  <input type="hidden" id="MerchantName" name="MerchantName" value="#{@azul.merchant_name}" >
+  <input type="hidden" id="MerchantType" name="MerchantType" value="#{@azul.merchant_type}" >
+  <input type="hidden" id="CurrencyCode" name="CurrencyCode" value="#{@currency}" >
+  <input type="hidden" id="itbis" name="itbis" value="#{@itbis.split('.').join}" >
+  <input type="hidden" id="OrderNumber" name="OrderNumber" value="#{@order_number}" >
+  <input type="hidden" id="Amount" name="Amount" value="#{@amount.split('.').join}" >
+  <input type="hidden" id="ApprovedUrl" name="ApprovedUrl" value="#{@azul.approved_url}" >
+  <input type="hidden" id="DeclinedUrl" name="DeclinedUrl" value="#{@azul.declined_url}" >
+  <input type="hidden" id="CancelUrl" name="CancelUrl" value="#{@azul.cancel_url}" >
+  <input type="hidden" id="ResponsePostUrl" name="ResponsePostUrl" value="#{@azul.response_post_url}" >
+  <input type="hidden" id="UseCustomField1" name="UseCustomField1" value="#{@azul.custom_field_1}" >
+  <input type="hidden" id="CustomField1Label" name="CustomField1Label" value="#{@azul.custom_field_1_label}" >
+  <input type="hidden" id="CustomField1Value" name="CustomField1Value" value="#{@azul.custom_field_1_value}" >
+  <input type="hidden" id="UseCustomField2" name="UseCustomField2" value="#{@azul.custom_field_2}" >
+  <input type="hidden" id="CustomField2Label" name="CustomField2Label" value="#{@azul.custom_field_2_label}" >
+  <input type="hidden" id="CustomField2Value" name="CustomField2Value" value="#{@azul.custom_field_2_value}" >
+  <input type="hidden" id="AuthHash" name="AuthHash" value="#{Digest::SHA512.hexdigest @auth_hash}" >
+  <input type="submit" value="Pay with Azul Payment Page">
+</form>".html_safe

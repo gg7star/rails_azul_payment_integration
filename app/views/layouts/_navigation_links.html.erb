@@ -1,3 +1,7 @@
 <%# add navigation links to this file %>
-<li class='nav-item active'><%= link_to 'Home', '#', class: 'nav-link' %></li>
+<li class='nav-item active'><%= link_to 'Home', root_path, class: 'nav-link' %></li>
+<% if user_signed_in? %>
+<li class='nav-item active'><%= link_to 'PageForwarding-Mode', page_forwarding_mode_azuls_path, class: 'nav-link' %></li>
+<li class='nav-item active'><%= link_to 'API-Mode', api_mode_azuls_path, class: 'nav-link' %></li>
+<% end %>
 <li class='nav-item active'><%= link_to 'About', '#', class: 'nav-link' %></li>

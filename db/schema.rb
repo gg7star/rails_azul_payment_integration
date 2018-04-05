@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180403125010) do
+ActiveRecord::Schema.define(version: 20180405050337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "azuls", force: :cascade do |t|
+    t.string "merchant_id"
+    t.string "merchant_type"
+    t.string "merchant_name"
+    t.string "auth_key"
+    t.string "url_azul"
+    t.string "approved_url"
+    t.string "declined_url"
+    t.string "cancel_url"
+    t.string "response_post_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "custom_field_1"
+    t.string "custom_field_1_label"
+    t.string "custom_field_1_value"
+    t.integer "custom_field_2"
+    t.string "custom_field_2_label"
+    t.string "custom_field_2_value"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false

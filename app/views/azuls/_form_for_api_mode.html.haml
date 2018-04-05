@@ -1,0 +1,39 @@
+= form_for @azul do |f|
+  - if @azul.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@azul.errors.count, "error")} prohibited this azul from being saved:"
+      %ul
+        - @azul.errors.full_messages.each do |message|
+          %li= message
+
+  .form-group.form-group-custom
+    .field.authform-fieldset
+      = f.label :merchant_id
+      = f.text_field :merchant_id, class: 'form-control', placeholder: 'e.g. 39036630010'
+    .fieldauthform-fieldset
+      = f.label :merchant_type
+      = f.text_field :merchant_type, class: 'form-control', placeholder: 'e.g. Sale'
+    .field.authform-fieldset
+      = f.label :merchant_name
+      = f.text_field :merchant_name, class: 'form-control', placeholder: 'e.g. Ategix'
+    .field.authform-fieldset
+      = f.label :auth_key
+      = f.text_field :auth_key, class: 'form-control', placeholder: 'e.g. ategix'
+    .field.authform-fieldset
+      = f.label :url_azul
+      = f.text_field :url_azul, class: 'form-control', placeholder: 'e.g. https://pruebas.azul.com.do/PaymentPage/'
+  .form-group.form-group-custom
+    .field.authform-fieldset
+      = f.label :approved_url
+      = f.text_field :approved_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/approved'
+    .field.authform-fieldset
+      = f.label :declined_url
+      = f.text_field :declined_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/declined'
+    .field.authform-fieldset
+      = f.label :cancel_url
+      = f.text_field :cancel_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/cancel'
+    .field.authform-fieldset
+      = f.label :response_post_url
+      = f.text_field :response_post_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/response_post'
+
+    = f.submit 'Make payment via AZUL', class: 'button right'
