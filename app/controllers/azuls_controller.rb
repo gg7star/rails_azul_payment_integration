@@ -94,18 +94,26 @@ class AzulsController < ApplicationController
 
   def approved
     puts "==== params: #{params.inspect} ===="
+    flash[:notice] = t("AZUL approved successfully!")
+    redirect_to page_forwarding_mode_azuls_path
   end
 
   def canceled
     puts "==== params: #{params.inspect} ===="
+    flash[:error] = flash[:error] = "AZUL canceled!"
+    redirect_to page_forwarding_mode_azuls_path
   end
 
   def declined
     puts "==== params: #{params.inspect} ===="
+    flash[:error] = "AZUL declined."
+    redirect_to page_forwarding_mode_azuls_path
   end
 
   def response_post
     puts "==== params: #{params.inspect} ===="
+    flash[:notice] = t("AZUL sent you a respose!")
+    redirect_to page_forwarding_mode_azuls_path
   end
 
   def get_auth_hash
