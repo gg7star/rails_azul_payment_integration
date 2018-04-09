@@ -98,7 +98,7 @@
       var order_number = $('#order_number').val();
       var currency = $('#currency').val();
 
-      remove_property_from_transaction_form();
+      remove_all_child_elements_from_transaction_form();
       add_property_into_azul_transaction_form("MerchantId", "MerchantId", merchant_id);
       add_property_into_azul_transaction_form("MerchantName", "MerchantName", merchant_name);
       add_property_into_azul_transaction_form("MerchantType", "MerchantType", merchant_type);
@@ -157,7 +157,7 @@
       $("#azul-transaction-form").append(input);
     }
 
-    function remove_property_from_transaction_form() {
-      $("#azul-transaction-form").remove("input");
+    function remove_all_child_elements_from_transaction_form() {
+      $("#azul-transaction-form").empty();
     }
   });
