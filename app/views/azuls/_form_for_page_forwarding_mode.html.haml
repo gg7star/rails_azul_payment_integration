@@ -56,10 +56,10 @@
         = f.text_field :custom_field_2_value, class: 'form-control'
     .form-group.form-group-custom
       .field.authform-fieldset
-        = label_tag :amount
+        = label_tag "Amount ($)"
         = text_field_tag :amount, '720', html: {class: 'form-control'}
       .field.authform-fieldset
-        = label_tag :itbis
+        = label_tag "itbs ($)"
         = text_field_tag :itbis, '180', html: {class: 'form-control'}
       .field.authform-fieldset
         = label_tag :order_number
@@ -137,7 +137,6 @@
         '&order_number=' + order_number +
         '&currency=' + currency,
         function (data) {
-          console.log('--- data: ', data.auth_hash);
           add_property_into_azul_transaction_form("AuthHash", "AuthHash", data.auth_hash);
           var str_result = "Original data for AuthHash: \n" + data.origin_auth + "\n\n" +
                            "AuthHash: \n" + data.auth_hash + "\n\n" +
