@@ -72,17 +72,17 @@ class AzulsController < ApplicationController
   def forward_to_azul_payment_page
     puts "params: #{params.inspect}"
 
-    currency = params[:currency]
-    order_number = params[:order_number]
+    # currency = params[:currency]
+    # order_number = params[:order_number]
     # amount = params[:amount]
     # itbis = params[:itbis]
-
-    itbis = '%.2f' % params[:itbis].to_f.round(2)
-    amount = '%.2f' % params[:amount].to_f.round(2)
-    amount = '%.2f' %  (amount.to_f + itbis.to_f).round(2)
-
-    auth_hash =  "#{params[:azul][:merchant_id]}#{params[:azul][:merchant_name]}#{params[:azul][:merchant_type]}#{currency}#{order_number}#{amount}#{params[:azul][:approved_url]}#{params[:azul][:declined_url]}#{params[:azul][:cancel_url]}#{params[:azul][:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:azul][:auth_key]}"
-    auth_hash = Digest::SHA512.hexdigest auth_hash
+    #
+    # itbis = '%.2f' % params[:itbis].to_f.round(2)
+    # amount = '%.2f' % params[:amount].to_f.round(2)
+    # amount = '%.2f' %  (amount.to_f + itbis.to_f).round(2)
+    #
+    # auth_hash =  "#{params[:azul][:merchant_id]}#{params[:azul][:merchant_name]}#{params[:azul][:merchant_type]}#{currency}#{order_number}#{amount}#{params[:azul][:approved_url]}#{params[:azul][:declined_url]}#{params[:azul][:cancel_url]}#{params[:azul][:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:azul][:auth_key]}"
+    # auth_hash = Digest::SHA512.hexdigest auth_hash
   end
 
   def api_mode
@@ -129,7 +129,7 @@ class AzulsController < ApplicationController
     origin_auth =  "#{params[:merchant_id]}#{params[:merchant_name]}#{params[:merchant_type]}#{params[:currency]}#{params[:order_number]}#{params[:amount]}#{params[:approved_url]}#{params[:declined_url]}#{params[:cancel_url]}#{params[:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:auth_key]}"
 
     auth_hash = Digest::SHA512.hexdigest origin_auth
-    render json: {auth_hash: auth_hash}
+    render json: {auth_hash: auth_hash, origin_auth: origin_auth}
   end
 
   private

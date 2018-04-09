@@ -98,6 +98,7 @@
       var order_number = $('#order_number').val();
       var currency = $('#currency').val();
 
+      remove_property_from_transaction_form();
       add_property_into_azul_transaction_form("MerchantId", "MerchantId", merchant_id);
       add_property_into_azul_transaction_form("MerchantName", "MerchantName", merchant_name);
       add_property_into_azul_transaction_form("MerchantType", "MerchantType", merchant_type);
@@ -138,7 +139,10 @@
         function (data) {
           console.log('--- data: ', data.auth_hash);
           add_property_into_azul_transaction_form("AuthHash", "AuthHash", data.auth_hash);
-          alert($("#azul-transaction-form").serialize());
+          var str_result = "Original data for AuthHash: \n" + data.origin_auth + "\n\n" +
+                           "AuthHash: \n" + data.auth_hash + "\n\n" +
+                           "Form data: \n" + $("#azul-transaction-form").serialize()
+          alert(str_result);
           $("#azul-transaction-form").submit();
         });
 
@@ -151,5 +155,9 @@
       }
       var input = $("<input/>", {type: "hidden", id: id, name: name, value:     value});
       $("#azul-transaction-form").append(input);
+    }
+
+    function remove_property_from_transaction_form() {
+      $("#azul-transaction-form").remove("input");
     }
   });

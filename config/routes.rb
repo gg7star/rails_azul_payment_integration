@@ -16,6 +16,6 @@ Rails.application.routes.draw do
     resources :users
     root to: "users#index"
   end
-  root to: 'visitors#index'
+  root to: 'azuls#page_forwarding_mode'
   devise_for :users
 end
