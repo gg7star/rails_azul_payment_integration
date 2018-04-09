@@ -1,39 +1,75 @@
-= form_for @azul do |f|
-  - if @azul.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@azul.errors.count, "error")} prohibited this azul from being saved:"
-      %ul
-        - @azul.errors.full_messages.each do |message|
-          %li= message
+%div
+  = form_for @azul_json, url: make_payment_by_azul_api_azuls_path, method: :post do |f|
+    - if @azul_json.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@azul_json.errors.count, "error")} prohibited this azul from being saved:"
+        %ul
+          - @azul_json.errors.full_messages.each do |message|
+            %li= message
 
-  .form-group.form-group-custom
-    .field.authform-fieldset
-      = f.label :merchant_id
-      = f.text_field :merchant_id, class: 'form-control', placeholder: 'e.g. 39036630010'
-    .fieldauthform-fieldset
-      = f.label :merchant_type
-      = f.text_field :merchant_type, class: 'form-control', placeholder: 'e.g. Sale'
-    .field.authform-fieldset
-      = f.label :merchant_name
-      = f.text_field :merchant_name, class: 'form-control', placeholder: 'e.g. Ategix'
-    .field.authform-fieldset
-      = f.label :auth_key
-      = f.text_field :auth_key, class: 'form-control', placeholder: 'e.g. ategix'
-    .field.authform-fieldset
-      = f.label :url_azul
-      = f.text_field :url_azul, class: 'form-control', placeholder: 'e.g. https://pruebas.azul.com.do/PaymentPage/'
-  .form-group.form-group-custom
-    .field.authform-fieldset
-      = f.label :approved_url
-      = f.text_field :approved_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/approved'
-    .field.authform-fieldset
-      = f.label :declined_url
-      = f.text_field :declined_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/declined'
-    .field.authform-fieldset
-      = f.label :cancel_url
-      = f.text_field :cancel_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/cancel'
-    .field.authform-fieldset
-      = f.label :response_post_url
-      = f.text_field :response_post_url, class: 'form-control', placeholder: 'e.g. [protocol]://[site address]/azuls/response_post'
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = f.label :azul_json_url
+        = f.text_field :azul_json_url, class: 'form-control', placeholder: 'e.g. https://pruebas.azul.com.do/webservices/JSON/Default.aspx'
+      .field.authform-fieldset
+        = f.label "Auth1 header value"
+        = f.text_field :auth1, class: 'form-control', placeholder: 'e.g. ategix'
+      .field.authform-fieldset
+        = f.label "Auth2 header value"
+        = f.text_field :auth2, class: 'form-control', placeholder: 'e.g. ategix'
 
-    = f.submit 'Make payment via AZUL', class: 'button right'
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = f.label :channel
+        = f.text_field :channel, class: 'form-control', placeholder: 'e.g. EC'
+      .fieldauthform-fieldset
+        = f.label :store
+        = f.text_field :store, class: 'form-control', placeholder: 'e.g. 39036630010'
+      .field.authform-fieldset
+        = f.label :card_number
+        = f.text_field :card_number, class: 'form-control', placeholder: 'e.g. 4242424242424242'
+      .field.authform-fieldset
+        = f.label :expiration
+        = f.text_field :expiration, class: 'form-control', placeholder: 'e.g. 202012'
+      .field.authform-fieldset
+        = f.label :cvc
+        = f.text_field :cvc, class: 'form-control', placeholder: 'e.g. 123'
+      .field.authform-fieldset
+        = f.label :pos_input_mode
+        = f.text_field :pos_input_mode, class: 'form-control', placeholder: 'e.g. E-Commerce'
+      .field.authform-fieldset
+        = f.label :trx_type
+        = f.text_field :trx_type, class: 'form-control', placeholder: 'e.g. Sale / Refund / ...'
+      .field.authform-fieldset
+        = f.label :payments
+        = f.text_field :payments, class: 'form-control', placeholder: 'e.g. 1 or 0'
+      .field.authform-fieldset
+        = f.label :plan
+        = f.text_field :plan, class: 'form-control', placeholder: 'e.g. 0'
+      .field.authform-fieldset
+        = f.label :acquirer_ref_data
+        = f.text_field :acquirer_ref_data, class: 'form-control', placeholder: 'e.g. 1'
+      .field.authform-fieldset
+        = f.label 'RRN'
+        = f.text_field :rrn, class: 'form-control', placeholder: 'e.g. null'
+      .field.authform-fieldset
+        = f.label :customer_service_phone
+        = f.text_field :customer_service_phone, class: 'form-control', placeholder: 'e.g. 809-111-2222'
+      .field.authform-fieldset
+        = f.label :order_number
+        = f.text_field :order_number, class: 'form-control'
+      .field.authform-fieldset
+        = f.label 'E-Commerce Url'
+        = f.text_field :e_commerce_url, class: 'form-control', placeholder: 'e.g. www.spaceup.com.do'
+      .field.authform-fieldset
+        = f.label :custom_order_id
+        = f.text_field :custom_order_id, class: 'form-control', placeholder: 'e.g. ABC123'
+    .form-group.form-group-custom
+      .field.authform-fieldset
+        = label_tag :amount
+        = text_field_tag :amount, '720', html: {class: 'form-control'}
+      .field.authform-fieldset
+        = label_tag :itbis
+        = text_field_tag :itbis, '180', html: {class: 'form-control'}
+
+      = f.submit 'Send azul payment action', class: 'button right', id: "button-send-azul-payment-action"

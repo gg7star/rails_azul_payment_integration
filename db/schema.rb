@@ -10,10 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180405050337) do
+ActiveRecord::Schema.define(version: 20180409050733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "azul_jsons", force: :cascade do |t|
+    t.string "channel"
+    t.string "store"
+    t.string "card_number"
+    t.string "expiration"
+    t.string "pos_input_mode"
+    t.string "trx_type"
+    t.string "amount"
+    t.string "currency_pos_code"
+    t.string "payments"
+    t.string "plan"
+    t.string "original_date"
+    t.string "original_trx_ticket_nr"
+    t.string "customer_service_phone"
+    t.string "cvc"
+    t.string "acquirer_ref_data"
+    t.string "order_number"
+    t.string "custom_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "itbis"
+    t.string "revenue_or_limit"
+    t.string "authorization_code"
+    t.string "iso_code"
+    t.string "rrn"
+    t.string "lot_number"
+    t.string "e_commerce_url"
+    t.string "azul_json_url"
+    t.string "auth1"
+    t.string "auth2"
+  end
 
   create_table "azuls", force: :cascade do |t|
     t.string "merchant_id"

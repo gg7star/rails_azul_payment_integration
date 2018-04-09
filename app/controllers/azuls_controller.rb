@@ -71,25 +71,30 @@ class AzulsController < ApplicationController
 
   def forward_to_azul_payment_page
     puts "params: #{params.inspect}"
-
-    # currency = params[:currency]
-    # order_number = params[:order_number]
-    # amount = params[:amount]
-    # itbis = params[:itbis]
-    #
-    # itbis = '%.2f' % params[:itbis].to_f.round(2)
-    # amount = '%.2f' % params[:amount].to_f.round(2)
-    # amount = '%.2f' %  (amount.to_f + itbis.to_f).round(2)
-    #
-    # auth_hash =  "#{params[:azul][:merchant_id]}#{params[:azul][:merchant_name]}#{params[:azul][:merchant_type]}#{currency}#{order_number}#{amount}#{params[:azul][:approved_url]}#{params[:azul][:declined_url]}#{params[:azul][:cancel_url]}#{params[:azul][:response_post_url]}#{params[:custom_field_1]}#{params[:custom_field_1_label]}#{params[:custom_field_1_value]}#{params[:custom_field_2]}#{params[:custom_field_2_label]}#{params[:custom_field_2_value]}#{params[:azul][:auth_key]}"
-    # auth_hash = Digest::SHA512.hexdigest auth_hash
   end
 
   def api_mode
-    @azul = Azul.first
-    if !@azul.present?
-      @azul = Azul.new
+    @azul_json = AzulJson.first
+    if !@azul_json.present?
+      @azul_json = AzulJson.new
     end
+  end
+
+  def make_payment_by_azul_api
+    puts "==== params: #{params.inspect} ===="
+    # save to database
+    azul_json = AzulJson.first
+    if azul_json.present?
+      azul_json.update(azul_json_params)
+    else
+      azul_json = AzulJson.create(azul_json_params)
+      azul_json.save!
+    end
+    body_data = azul_json_params_for_remote.to_json
+    puts "===== azul_json_body_data: #{body_data}"
+    # make POST request to azul.com.do
+    make_post_req(azul_json, body_data)
+    redirect_to api_mode_azuls_path
   end
 
   def approved
@@ -142,7 +147,42 @@ class AzulsController < ApplicationController
     def azul_params
       params.require(:azul).permit(:merchant_id, :merchant_type, :merchant_name, :auth_key, :url_azul, :approved_url, :declined_url, :cancel_url, :response_post_url, :custom_field_1, :custom_field_1_label, :custom_field_1_value, :custom_field_2, :custom_field_2_label, :custom_field_2_value)
     end
+
     def azul_params_from_api
       params.permit(:merchant_id, :merchant_type, :merchant_name, :auth_key, :url_azul, :approved_url, :declined_url, :cancel_url, :response_post_url, :custom_field_1, :custom_field_1_label, :custom_field_1_value, :custom_field_2, :custom_field_2_label, :custom_field_2_value)
+    end
+
+    def azul_json_params_for_remote
+      azul_json_parameters = params[:azul_json]
+      azul_json_parameters[:rrn] = nil if !azul_json_parameters[:rrn].present? or azul_json_parameters[:rrn] == ''
+      azul_json_parameters.permit(:channel, :store, :card_number, :expiration, :cvc, :pos_input_mode, :trx_type, :amount, :currency_pos_code, :payments, :plan, :original_date, :original_trx_ticket_nr, :customer_service_phone, :acquirer_ref_data, :order_number, :custom_order_id, :rrn, :e_commerce_url)
+    end
+
+    def azul_json_params
+      azul_json_parameters = params[:azul_json]
+      azul_json_parameters[:rrn] = nil if !azul_json_parameters[:rrn].present? or azul_json_parameters[:rrn] == ''
+      azul_json_parameters.permit(:azul_json_url, :auth1, :auth2, :channel, :store, :card_number, :expiration, :cvc, :pos_input_mode, :trx_type, :amount, :currency_pos_code, :payments, :plan, :original_date, :original_trx_ticket_nr, :customer_service_phone, :acquirer_ref_data, :order_number, :custom_order_id, :rrn, :e_commerce_url)
+    end
+
+    def make_post_req(azul_json, body)
+      require 'net/http'
+      require 'json'
+      begin
+        uri = URI(azul_json.azul_json_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json',
+          'Auth1' => azul_json.auth1,
+          'Auth2' => azul_json.auth2})
+        req.body = body
+        puts "======== request: #{req.inspect}"
+        res = http.request(req)
+        puts "======== response: #{res.body}"
+        response_data = JSON.parse(res.body)
+        flash[:notice] = "request:\nauth1: #{azul_json.auth1}\nauth2: #{azul_json.auth2}\nrequest_body: #{body}\n\nresponse from azul: #{response_data}"
+      rescue => e
+        puts "==== failed #{e}"
+        flash[:error] = "request:\nauth1: #{azul_json.auth1}\nauth2: #{azul_json.auth2}\nrequest_body: #{body}\n\nfailed payment: #{e}"
+        response_data = nil
+      end
     end
 end

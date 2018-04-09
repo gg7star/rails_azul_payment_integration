@@ -1,0 +1,2 @@
+class AzulJson < ApplicationRecord
+end
