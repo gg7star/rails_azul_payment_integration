@@ -165,14 +165,19 @@ class AzulsController < ApplicationController
     end
 
     def make_post_req(azul_json, body)
+      require 'uri'
       require 'net/http'
+      require 'net/https'
       require 'json'
+
       begin
-        uri = URI(azul_json.azul_json_url)
+        uri = URI.parse(azul_json.azul_json_url)
         http = Net::HTTP.new(uri.host, uri.port)
-        req = Net::HTTP::Post.new(uri.path, {'Content-Type' =>'application/json',
-          'Auth1' => azul_json.auth1,
-          'Auth2' => azul_json.auth2})
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        req = Net::HTTP::Post.new(uri.path, initheader = {'Content-Type' =>'application/json'})
+        req['Auth1'] = azul_json.auth1
+        req['Auth2'] = azul_json.auth2
         req.body = body
         puts "======== request: #{req.inspect}"
         res = http.request(req)
